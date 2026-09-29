@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Register screen 2. Without this, Open profile crashes. -->
+        <!-- No MAIN / LAUNCHER filter. Only MainActivity is the app icon. -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
