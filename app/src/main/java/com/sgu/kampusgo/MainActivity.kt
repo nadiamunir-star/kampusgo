@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
             KampusGoTheme {
 // Holds the typed text while this screen is open. A redraw keeps it. Rotation still runs onCreate again.
                 var name by remember { mutableStateOf("") }
+                var npm by remember { mutableStateOf("") }
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(
                             modifier = Modifier
@@ -49,11 +50,18 @@ class MainActivity : ComponentActivity() {
                         onValueChange = { name = it },
                         label = { Text("Your name") }
                     )
+                    OutlinedTextField(
+                         value = npm,
+                         onValueChange = { npm = it },
+                         label = { Text("Your NPM") }
+                    )
                     Button(onClick = {
 // Explicit Intent: open ProfileActivity, which is our own screen.
                         val intent = Intent(activity, ProfileActivity::class.java)
 // Attach the typed name under the label "name". Screen 2 reads that same label.
                         intent.putExtra("name", name)
+// Attach the typed npm under the label "npm". Screen 2 reads that same label.
+                        intent.putExtra("npm", npm)
 // Ask Android to create screen 2 and show it.
                         activity.startActivity(intent)
                     }) {
