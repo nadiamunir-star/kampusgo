@@ -67,6 +67,13 @@ class MainActivity : ComponentActivity() {
                     }) {
                         Text("Open profile")
                     }
+                    Button(onClick = {
+// Explicit Intent. This opens the XML activity, not ProfileActivity.
+                        val intent = Intent(activity, ProfileXmlActivity::class.java)
+                        activity.startActivity(intent)
+                    }) {
+                        Text("XML form")
+                    }
                 }
                 }
             }
