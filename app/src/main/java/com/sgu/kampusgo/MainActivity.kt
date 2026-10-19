@@ -25,6 +25,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,45 +39,38 @@ class MainActivity : ComponentActivity() {
 // Holds the typed text while this screen is open. A redraw keeps it. Rotation still runs onCreate again.
                 var name by remember { mutableStateOf("") }
                 var npm by remember { mutableStateOf("") }
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+
                     Column(
-                            modifier = Modifier
-                        .padding(innerPadding)
-                        .padding(24.dp)
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .verticalScroll(rememberScrollState())
                     ) {
-                    Text(text = "KampusGo")
-// Screen 1 input. "name" here is the text, not the Intent extra yet.
-                    OutlinedTextField(
-                        value = name,
-                        onValueChange = { name = it },
-                        label = { Text("Your name") }
-                    )
-                    OutlinedTextField(
-                         value = npm,
-                         onValueChange = { npm = it },
-                         label = { Text("Your NPM") }
-                    )
-                    Button(onClick = {
-// Explicit Intent: open ProfileActivity, which is our own screen.
-                        val intent = Intent(activity, ProfileActivity::class.java)
-// Attach the typed name under the label "name". Screen 2 reads that same label.
-                        intent.putExtra("name", name)
-// Attach the typed npm under the label "npm". Screen 2 reads that same label.
-                        intent.putExtra("npm", npm)
-// Ask Android to create screen 2 and show it.
-                        activity.startActivity(intent)
-                    }) {
-                        Text("Open profile")
-                    }
-                    Button(onClick = {
-// Explicit Intent. This opens the XML activity, not ProfileActivity.
-                        val intent = Intent(activity, ProfileXmlActivity::class.java)
-                        activity.startActivity(intent)
-                    }) {
-                        Text("XML form")
+
+                        // New Compose profile form.
+                        ProfileForm(
+                            modifier = Modifier.padding(24.dp)
+                        )
+
+                        // Keep access to the old Lab 04 XML screen.
+                        Button(
+                            onClick = {
+                                activity.startActivity(
+                                    Intent(
+                                        activity,
+                                        ProfileXmlActivity::class.java
+                                    )
+                                )
+                            }
+                        ) {
+                            Text("XML form")
+                        }
                     }
                 }
-                }
+
             }
         }
     }
