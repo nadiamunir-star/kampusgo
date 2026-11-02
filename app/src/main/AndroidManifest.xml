@@ -33,6 +33,10 @@
             android:name=".ProfileXmlActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".EventDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

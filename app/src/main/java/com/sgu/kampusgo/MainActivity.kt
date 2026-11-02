@@ -40,36 +40,32 @@ class MainActivity : ComponentActivity() {
                 var name by remember { mutableStateOf("") }
                 var npm by remember { mutableStateOf("") }
 
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
-
-                    Column(
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .verticalScroll(rememberScrollState())
-                    ) {
-
-                        // New Compose profile form.
-                        ProfileForm(
-                            modifier = Modifier.padding(24.dp)
+                var showEmpty by remember { mutableStateOf(false) }
+                val events = if (showEmpty) emptyList() else sampleEvents
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Column(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
+                        EventList(
+                            events = events,
+                            onEventClick = { id ->
+                                val intent = Intent(activity, EventDetailActivity::class.java)
+                                intent.putExtra("id", id)
+                                activity.startActivity(intent)
+                            },
+                            modifier = Modifier.weight(1f)
                         )
-
-                        // Keep access to the old Lab 04 XML screen.
-                        Button(
-                            onClick = {
-                                activity.startActivity(
-                                    Intent(
-                                        activity,
-                                        ProfileXmlActivity::class.java
-                                    )
-                                )
-                            }
-                        ) {
+                        Button(onClick = { showEmpty = !showEmpty }) {
+                            Text(if (showEmpty) "Show events" else "Show empty")
+                        }
+                        Button(onClick = {
+                            activity.startActivity(
+                                Intent(activity, ProfileXmlActivity::class.java)
+                            )
+                        }) {
                             Text("XML form")
                         }
                     }
                 }
+
 
             }
         }
